@@ -23,10 +23,6 @@ export default function Layout({ children }: Props) {
     <React.Fragment>
       <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
       <main>{children}</main>
-      <footer>
-        © {new Date().getFullYear()} &middot; Built with
-        {` `}
-      </footer>
     </React.Fragment>
   );
 }
