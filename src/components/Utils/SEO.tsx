@@ -4,92 +4,116 @@ import { Helmet } from "react-helmet";
 import { useStaticQuery, graphql } from "gatsby";
 
 type Props = {
-  description: string;
-  lang: string;
-  meta: [
-    {
-      name: string;
-      content: string;
-      property?: undefined;
-    }
-  ];
-  title: string;
+  seo: {
+    metaTitle?: string;
+    metaDescription?: string;
+  };
 };
 
-function SEO({ description, lang, meta, title }: Props) {
-  const { site } = useStaticQuery(
-    graphql`
-      query {
-        site {
-          siteMetadata {
-            title
-            description
-            author
+export default function SEO({ seo = {} }: Props) {
+  const { strapiGlobal } = useStaticQuery(graphql`
+    query GlobalSiteData {
+      strapiGlobal {
+        siteName
+        favicon {
+          localFile {
+            url
+          }
+        }
+        defaultSeo {
+          metaTitle
+          metaDescription
+          shareImage {
+            localFile {
+              url
+            }
           }
         }
       }
-    `
-  );
+    }
+  `);
 
-  const metaDescription = description || site.siteMetadata.description;
-  const defaultTitle = site.siteMetadata?.title;
+  const { siteName, defaultSeo, favicon } = strapiGlobal;
+
+  const fullSeo = { ...defaultSeo, ...seo };
+
+  fullSeo.metaTitle = `${fullSeo.metaTitle} | ${siteName}`;
+
+  const getMetaTags = () => {
+    const tags = [];
+
+    if (fullSeo.metaTitle) {
+      tags.push(
+        {
+          property: "og:title",
+          content: fullSeo.metaTitle,
+        },
+        {
+          name: "twitter:title",
+          content: fullSeo.metaTitle,
+        }
+      );
+    }
+    if (fullSeo.metaDescription) {
+      tags.push(
+        {
+          name: "description",
+          content: fullSeo.metaDescription,
+        },
+        {
+          property: "og:description",
+          content: fullSeo.metaDescription,
+        },
+        {
+          name: "twitter:description",
+          content: fullSeo.metaDescription,
+        }
+      );
+    }
+    if (fullSeo.shareImage) {
+      const imageUrl = fullSeo.shareImage.localFile.url;
+      tags.push(
+        {
+          name: "image",
+          content: imageUrl,
+        },
+        {
+          property: "og:image",
+          content: imageUrl,
+        },
+        {
+          name: "twitter:image",
+          content: imageUrl,
+        }
+      );
+    }
+    if (fullSeo.article) {
+      tags.push({
+        property: "og:type",
+        content: "article",
+      });
+    }
+    tags.push({ name: "twitter:card", content: "summary_large_image" });
+
+    return tags;
+  };
+
+  const metaTags = getMetaTags();
 
   return (
     <Helmet
-      htmlAttributes={{
-        lang,
-      }}
-      title={title}
-      titleTemplate={defaultTitle ? `%s / ${defaultTitle}` : undefined}
-      meta={[
+      title={fullSeo.metaTitle}
+      link={[
         {
-          name: `description`,
-          content: metaDescription,
+          rel: "icon",
+          href: favicon.localFile.url,
         },
-        {
-          property: `og:title`,
-          content: title,
-        },
-        {
-          property: `og:description`,
-          content: metaDescription,
-        },
-        {
-          property: `og:type`,
-          content: `website`,
-        },
-        {
-          name: `twitter:card`,
-          content: `summary`,
-        },
-        {
-          name: `twitter:creator`,
-          content: site.siteMetadata?.author || ``,
-        },
-        {
-          name: `twitter:title`,
-          content: title,
-        },
-        {
-          name: `twitter:description`,
-          content: metaDescription,
-        },
-      ].concat(meta)}
+      ]}
+      meta={metaTags}
     />
   );
 }
 
 SEO.propTypes = {
-  description: PropTypes.string,
-  lang: PropTypes.string,
-  meta: PropTypes.arrayOf(PropTypes.object),
-  title: PropTypes.string.isRequired,
+  seo: PropTypes.object,
 };
-
-SEO.defaultProps = {
-  lang: `en`,
-  meta: [],
-  description: ``,
-};
-
-export default SEO;

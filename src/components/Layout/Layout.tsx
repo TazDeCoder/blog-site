@@ -9,19 +9,18 @@ type Props = {
 };
 
 export default function Layout({ children }: Props) {
-  const data = useStaticQuery(graphql`
-    query SiteTitleQuery {
-      site {
-        siteMetadata {
-          title
-        }
+  const { strapiGlobal } = useStaticQuery(graphql`
+    query GlobalSiteMetaData {
+      strapiGlobal {
+        siteName
+        siteDescription
       }
     }
   `);
 
   return (
     <React.Fragment>
-      <Header siteTitle={data.site.siteMetadata?.title || `Title`} />
+      {strapiGlobal.siteName && <Header siteTitle={strapiGlobal.siteName} />}
       <main>{children}</main>
     </React.Fragment>
   );
