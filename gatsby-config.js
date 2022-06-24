@@ -13,6 +13,10 @@ const strapiConfig = {
           process.env.GATSBY_IS_PREVIEW === "true" ? "preview" : "live",
         populate: {
           cover: "*",
+          author: {
+            populate: "*",
+          },
+          category: "*",
           blocks: {
             populate: "*",
           },
@@ -51,16 +55,6 @@ const strapiConfig = {
   ],
 };
 
-const manifestConfig = {
-  name: `blog-site`,
-  short_name: `blog`,
-  start_url: `/`,
-  background_color: `#fff`,
-  theme_color: `#fff`,
-  display: `minimal-ui`,
-  icon: `./src/images/gatsby-icon.png`,
-};
-
 module.exports = {
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -74,10 +68,6 @@ module.exports = {
     },
     `gatsby-transformer-sharp`,
     `gatsby-plugin-sharp`,
-    {
-      resolve: `gatsby-plugin-manifest`,
-      options: manifestConfig,
-    },
     `gatsby-plugin-offline`,
     {
       resolve: `gatsby-source-strapi`,
