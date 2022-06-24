@@ -32,6 +32,9 @@ const strapiConfig = {
   ],
   singleTypes: [
     {
+      singularName: "blog",
+    },
+    {
       singularName: "about",
       queryParams: {
         populate: {
