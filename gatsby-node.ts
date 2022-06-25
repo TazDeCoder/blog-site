@@ -11,7 +11,7 @@ exports.createPages = async ({ graphql, actions }) => {
 
   const { createPage } = actions;
 
-  data.allStrapiArticle.nodes.map(node => {
+  data.allStrapiArticle.nodes.map((node: { slug: string }) => {
     createPage({
       path: `/blogs/${node.slug}`,
       component: require.resolve("./src/templates/blog-post.tsx"),
