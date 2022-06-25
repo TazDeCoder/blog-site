@@ -1,3 +1,5 @@
+import type { GatsbyConfig } from "gatsby";
+
 require("dotenv").config({
   path: `.env.${process.env.NODE_ENV}`,
 });
@@ -58,7 +60,7 @@ const strapiConfig = {
   ],
 };
 
-module.exports = {
+const config: GatsbyConfig = {
   plugins: [
     `gatsby-plugin-react-helmet`,
     `gatsby-plugin-image`,
@@ -72,3 +74,5 @@ module.exports = {
     `gatsby-transformer-remark`,
   ],
 };
+
+export default config;

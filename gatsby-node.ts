@@ -1,5 +1,11 @@
-exports.createPages = async ({ graphql, actions }) => {
-  const { data } = await graphql(`
+import path from "path";
+import type { GatsbyNode } from "gatsby";
+
+export const createPages: GatsbyNode["createPages"] = async ({
+  graphql,
+  actions,
+}) => {
+  const { data }: { data?: any } = await graphql(`
     query Articles {
       allStrapiArticle {
         nodes {
@@ -14,7 +20,7 @@ exports.createPages = async ({ graphql, actions }) => {
   data.allStrapiArticle.nodes.map((node: { slug: string }) => {
     createPage({
       path: `/blogs/${node.slug}`,
-      component: require.resolve("./src/templates/blog-post.tsx"),
+      component: path.resolve("./src/templates/blog-post.tsx"),
       context: { slug: node.slug },
     });
   });
