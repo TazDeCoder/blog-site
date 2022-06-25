@@ -1,10 +1,21 @@
-// exports.createPages = async ({ actions }) => {
-//   const { createPage } = actions
-//   createPage({
-//     path: "/using-dsg",
-//     component: require.resolve("./src/templates/using-dsg.js"),
-//     context: {},
-//     defer: true,
-//   })
-// }
-// NOTE: to be used later to dynamically generate pages for single blog posts
+exports.createPages = async ({ graphql, actions }) => {
+  const { data } = await graphql(`
+    query Articles {
+      allStrapiArticle {
+        nodes {
+          slug
+        }
+      }
+    }
+  `);
+
+  const { createPage } = actions;
+
+  data.allStrapiArticle.nodes.map(node => {
+    createPage({
+      path: `/blogs/${node.slug}`,
+      component: require.resolve("./src/templates/blog-post.tsx"),
+      context: { slug: node.slug },
+    });
+  });
+};
