@@ -2,12 +2,25 @@ import React from "react";
 import PropTypes from "prop-types";
 import { graphql } from "gatsby";
 
-import Article from "../components/Article/Article";
+import Layout from "../components/Layout/Layout";
+import SEO from "../components/Utils/SEO";
+import ArticlePost from "../components/ArticlePost/ArticlePost";
 
 type Props = { data: any };
 
 export default function BlogPost({ data }: Props) {
-  return <Article article={data.strapiArticle} />;
+  const { strapiArticle } = data;
+  return (
+    <Layout>
+      <SEO
+        seo={{
+          metaTitle: strapiArticle.title,
+          metaDescription: strapiArticle.description,
+        }}
+      />
+      <ArticlePost article={strapiArticle} />
+    </Layout>
+  );
 }
 
 BlogPost.propTypes = {
