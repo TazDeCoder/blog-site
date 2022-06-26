@@ -75,6 +75,7 @@ const config: GatsbyConfig = {
       options: strapiConfig,
     },
     `gatsby-transformer-remark`,
+    `gatsby-plugin-gatsby-cloud`,
   ],
 };
 
