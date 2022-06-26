@@ -16,7 +16,7 @@ export default function ArticleItem({ article }: Props) {
   return (
     <ArticleCard>
       {category?.slug && (
-        <Link component={RouterLink} to={`${category.slug}`}>
+        <Link component={RouterLink} to={`/blogs/tags/${category.slug}`}>
           {`#${category.name}`}
         </Link>
       )}

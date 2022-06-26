@@ -25,7 +25,7 @@ export default function Article({ article }: Props) {
           <GatsbyImage image={coverImage} alt={cover.alternativeText} />
         )}
         <Box sx={{ p: 2 }}>
-          <Link component={RouterLink} to={`${category.slug}`}>
+          <Link component={RouterLink} to={`/blogs/tags/${category.slug}`}>
             {`#${category.name}`}
           </Link>
           <Typography
