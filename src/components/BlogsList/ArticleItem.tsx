@@ -15,9 +15,11 @@ export default function ArticleItem({ article }: Props) {
 
   return (
     <ArticleCard>
-      <Link component={RouterLink} to={`${category.slug}`}>
-        {`#${category.name}`}
-      </Link>
+      {category?.slug && (
+        <Link component={RouterLink} to={`${category.slug}`}>
+          {`#${category.name}`}
+        </Link>
+      )}
       <Typography variant="h3" component="h1">
         {article.title}
       </Typography>
