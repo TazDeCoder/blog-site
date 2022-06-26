@@ -1,14 +1,62 @@
 import React from "react";
+import PropTypes from "prop-types";
+import { graphql } from "gatsby";
+import { Box, Typography } from "@mui/material";
+import { GatsbyImage, getImage } from "gatsby-plugin-image";
 
 import Layout from "../components/Layout/Layout";
-import Seo from "../components/Utils/SEO";
+import SEO from "../components/Utils/SEO";
 
-export default function NotFoundPage() {
+type Props = { data: any };
+
+export default function NotFoundPage({ data }: Props) {
+  const { strapiFallback } = data;
+  const { title, description, file } = strapiFallback;
+  const image = getImage(file.localFile);
+
   return (
     <Layout>
-      <Seo title="404: Not found" />
-      <h1>404: Not Found</h1>
-      <p>You just hit a route that doesn&#39;t exist... the sadness.</p>
+      <SEO
+        seo={{
+          metaTitle: title,
+          metaDescription: description,
+        }}
+      />
+      <Box
+        sx={{
+          textAlign: {
+            xs: "center",
+            sm: "initial",
+          },
+        }}
+      >
+        <Typography variant="h1">{title}</Typography>
+        <Typography variant="h5" component="p">
+          {description}
+        </Typography>
+        {image && <GatsbyImage image={image} alt={file.alternativeText} />}
+      </Box>
     </Layout>
   );
 }
+
+NotFoundPage.propTypes = {
+  data: PropTypes.object,
+};
+
+export const query = graphql`
+  query FallbackPageData {
+    strapiFallback {
+      title
+      description
+      file {
+        alternativeText
+        localFile {
+          childImageSharp {
+            gatsbyImageData
+          }
+        }
+      }
+    }
+  }
+`;
