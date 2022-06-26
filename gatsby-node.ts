@@ -6,8 +6,13 @@ export const createPages: GatsbyNode["createPages"] = async ({
   actions,
 }) => {
   const { data }: { data?: any } = await graphql(`
-    query Articles {
+    query ArticlesAndCategories {
       allStrapiArticle {
+        nodes {
+          slug
+        }
+      }
+      allStrapiCategory {
         nodes {
           slug
         }
@@ -21,6 +26,14 @@ export const createPages: GatsbyNode["createPages"] = async ({
     createPage({
       path: `/blogs/${node.slug}`,
       component: path.resolve("./src/templates/blog-post.tsx"),
+      context: { slug: node.slug },
+    });
+  });
+
+  data.allStrapiCategory.nodes.map((node: { slug: string }) => {
+    createPage({
+      path: `/blogs/${node.slug}`,
+      component: path.resolve("./src/templates/category.tsx"),
       context: { slug: node.slug },
     });
   });
