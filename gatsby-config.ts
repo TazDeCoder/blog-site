@@ -34,6 +34,9 @@ const strapiConfig = {
   ],
   singleTypes: [
     {
+      singularName: "fallback",
+    },
+    {
       singularName: "blog",
     },
     {
