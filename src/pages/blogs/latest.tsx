@@ -2,9 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import { graphql } from "gatsby";
 
-import Layout from "../components/Layout/Layout";
-import SEO from "../components/Utils/SEO";
-import ArticleList from "../components/BlogsList/ArticleList";
+import Layout from "../../components/Layout/Layout";
+import SEO from "../../components/Utils/SEO";
+import ArticleList from "../../components/BlogsList/ArticleList";
 
 type Props = { data: any };
 
