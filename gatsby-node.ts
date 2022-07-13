@@ -21,31 +21,37 @@ export const createPages: GatsbyNode["createPages"] = async ({
   `);
 
   const { createPage } = actions;
-  // LATEST BLOG-POST PAGES
-  data.allStrapiArticle.nodes.map((node: { slug: string }) => {
-    createPage({
-      path: `/blogs/latest/${node.slug}`,
-      component: path.resolve("./src/templates/blog-post.tsx"),
-      context: { slug: node.slug },
-    });
-  });
-  // SINGLE-CATEGORY PAGES
-  data.allStrapiCategory.nodes.map((node: { slug: string }) => {
-    createPage({
-      path: `/blogs/tags/${node.slug}`,
-      component: path.resolve("./src/templates/category.tsx"),
-      context: { slug: node.slug },
-    });
-  });
-  // CATEGORY BLOG-POST PAGES
-  data.allStrapiCategory.nodes.map((catg: { slug: string }) => {
-    data.allStrapiArticle.nodes.map((post: { slug: string }) => {
+  if (data.allStrapiArticle?.nodes) {
+    // LATEST BLOG-POST PAGES
+    data.allStrapiArticle.nodes.map((node: { slug: string }) => {
       createPage({
-        path: `/blogs/tags/${catg.slug}/${post.slug}`,
+        path: `/blogs/latest/${node.slug}`,
         component: path.resolve("./src/templates/blog-post.tsx"),
-        context: { slug: post.slug },
-        defer: true,
+        context: { slug: node.slug },
       });
     });
-  });
+  }
+  if (data.allStrapiCategory?.nodes) {
+    // SINGLE-CATEGORY PAGES
+    data.allStrapiCategory.nodes.map((node: { slug: string }) => {
+      createPage({
+        path: `/blogs/tags/${node.slug}`,
+        component: path.resolve("./src/templates/category.tsx"),
+        context: { slug: node.slug },
+      });
+    });
+  }
+  if (data.allStrapiCategory?.nodes && data.allStrapiArticle?.nodes) {
+    // CATEGORY BLOG-POST PAGES
+    data.allStrapiCategory.nodes.map((catg: { slug: string }) => {
+      data.allStrapiArticle.nodes.map((post: { slug: string }) => {
+        createPage({
+          path: `/blogs/tags/${catg.slug}/${post.slug}`,
+          component: path.resolve("./src/templates/blog-post.tsx"),
+          context: { slug: post.slug },
+          defer: true,
+        });
+      });
+    });
+  }
 };
