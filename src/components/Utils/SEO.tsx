@@ -23,11 +23,6 @@ export default function SEO({ seo = {} }: Props) {
         defaultSeo {
           metaTitle
           metaDescription
-          shareImage {
-            localFile {
-              url
-            }
-          }
         }
       }
     }
@@ -67,23 +62,6 @@ export default function SEO({ seo = {} }: Props) {
         {
           name: "twitter:description",
           content: fullSeo.metaDescription,
-        }
-      );
-    }
-    if (fullSeo.shareImage) {
-      const imageUrl = fullSeo.shareImage.localFile.url;
-      tags.push(
-        {
-          name: "image",
-          content: imageUrl,
-        },
-        {
-          property: "og:image",
-          content: imageUrl,
-        },
-        {
-          name: "twitter:image",
-          content: imageUrl,
         }
       );
     }
